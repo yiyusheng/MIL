@@ -20,7 +20,7 @@ def merge_dir(dir_name):
         data_list.append(d)
     data = pd.concat(data_list,sort=False)
     data = data.sort_values(['date','model','serial_number'])
-    data.to_csv(path+dir_name,index=0)
+    data.to_csv(path+'year_file/'+dir_name,index=0)
     print "Merge %s success..." %(dir_name)
     return data
     
