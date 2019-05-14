@@ -8,13 +8,8 @@ Created on Tue May 14 11:22:22 2019
 load data
 """
 
-import pandas as pd
 import os,time
-
-def load_file(path):
-    data = pd.read_csv(path,sep=',')
-    print '[%s]Read %s success...' %(time.asctime( time.localtime(time.time())),path)
-    return data
+from merge_data import load_file 
 
 if __name__=='__main__':
     print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
