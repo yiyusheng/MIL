@@ -70,7 +70,7 @@ if __name__=='__main__':
     path_model = os.getenv("HOME")+'/Data/backblaze/model_file/'
     path_stat =  os.getenv("HOME")+'/Data/backblaze/stat/'
     
-    data = load_file(path_load,nrows=500000)
+    data = load_file(path_load)
     data_filter = filter_data(data)
     
     [m1,m2,m3,m4,m5,m6] = group_data_by_models(data_filter,path_model)

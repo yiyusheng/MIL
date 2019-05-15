@@ -12,7 +12,7 @@ k-fold group data
 import os,time
 import numpy as np
 import pandas as pd
-import scipy as sp
+import scipy
 from merge_data import load_file,get_colnames 
 
 def normalize_data(data):
@@ -32,8 +32,8 @@ def add_tia(data):
 
 def select_feature(data):
     data = add_tia(data)
-    stat_ztest = 0
-    scipy.stats.ranksums(x, y)
+#    stat_ztest = 0
+#    scipy.stats.ranksums(x, y)
 
 def kfold_data(datalist_normalized,datalist_select_feature):
     pass
