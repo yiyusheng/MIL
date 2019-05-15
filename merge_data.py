@@ -12,10 +12,20 @@ import pandas as pd
 import os,time
 
 # %%load_data
-def load_file(path):
-    data = pd.read_csv(path,sep=',')
-    print '[%s]Read %s success...' %(time.asctime(time.localtime(time.time())),path)
+def load_file(path,nrows=-1):
+    if nrows==-1:
+        data = pd.read_csv(path,sep=',')
+        print '[%s]Read %s success...' %(time.asctime(time.localtime(time.time())),path)
+    else:
+        data = pd.read_csv(path,sep=',',nrows=nrows)
+        print '[%s]Read %s %d lines success...' %(time.asctime(time.localtime(time.time())),path,nrows)       
     return data
+
+def get_colnames(data):
+    cn = data.columns.values.tolist()
+    name_meta = cn[0:5]
+    name_smart = cn[5:len(cn)]
+    return [name_meta,name_smart]
 
 # %% read files
 def merge_dir(dir_name,save=1):
