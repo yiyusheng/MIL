@@ -35,27 +35,38 @@ def group_data_by_models(data_filter,path,save=1):
             data_model.to_csv(path+m,index=0)        
     return data_models
 
-def stat_by_models(data_filter):
+def stat_by_models(data_filter,path_stat,save=1):
 #    stat_model_num_item = data_filter['model'].value_counts()
 #    stat_model_num_failure = data_filter[data_filter['failure']==1]['model'].value_counts()
     
     stat_model_num_item = data_filter.groupby(['model']).size().to_frame('item')
-    stat_model_num_sn = data_filter.groupby(['model'])['serial_number'].nunique()
+    stat_model_num_sn = data_filter.groupby(['model'])['serial_number'].nunique().to_frame()
     stat_model_num_failure = data_filter[data_filter['failure']==1].groupby(['model']).size().to_frame('failure')
     stat_model_date_num_item = data_filter.groupby(['model','date']).size().to_frame('item').reset_index()
     stat_model_date_num_failure = data_filter[data_filter['failure']==1].groupby(['model','date']).size().to_frame('failure').reset_index()
-    return [stat_model_num_item,stat_model_num_sn,stat_model_num_failure,stat_model_date_num_item,stat_model_date_num_failure]    
+    stat_model_count = data_filter['model'].value_counts()/len(data_filter).to_frame
+    
+    if save==1:
+        stat_model_num_item.to_csv(path_stat+'stat_model_num_item')  
+        stat_model_num_sn.to_csv(path_stat+'stat_model_num_sn')  
+        stat_model_num_failure.to_csv(path_stat+'stat_model_num_failure')  
+        stat_model_date_num_item.to_csv(path_stat+'stat_model_date_num_item',index=0)  
+        stat_model_date_num_failure.to_csv(path_stat+'stat_model_date_num_failure',index=0)  
+        stat_model_count.to_csv(path_stat+'stat_model_count')
+    
+    return [stat_model_num_item,stat_model_num_sn,stat_model_num_failure,stat_model_date_num_item,stat_model_date_num_failure,stat_model_count]    
 
 if __name__=='__main__':
     print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
     
     path_load = os.getenv("HOME")+'/Data/backblaze/data_bb'
-    path_model = os.getenv("HOME")+'/Data/backblaze/model_file'
+    path_model = os.getenv("HOME")+'/Data/backblaze/model_file/'
+    path_stat =  os.getenv("HOME")+'/Data/backblaze/stat/'
     
     data = load_file(path_load)
     data_filter = filter_data(data)
     
     [m1,m2,m3,m4,m5,m6] = group_data_by_models(data_filter,path_model)
-    [s1,s2,s3,s4,s5] = stat_by_models(data_filter)
+    [s1,s2,s3,s4,s5,s6] = stat_by_models(data_filter)
     
     print '[%s]main end...' %(time.asctime( time.localtime(time.time())))

@@ -35,9 +35,10 @@ def merge_dir(dir_name,save=1):
     return data
     
 def merge_all(data_list,save=1):
-    data_bb = pd.concat(data_list,sort=False)
+    data = pd.concat(data_list,sort=False)
     if save==1:
-        data_bb.to_csv('/home/yiyusheng/Data/backblaze/data_bb',index=0)
+        data.to_csv('/home/yiyusheng/Data/backblaze/data_bb',index=0)
+    return data
 
 # %%
 if __name__=='__main__':
@@ -50,6 +51,6 @@ if __name__=='__main__':
     data18 = merge_dir('data_2018')
     data19 = merge_dir('data_2019')
     data_list = [data13,data15,data16,data17,data18,data19]
-    merge_all(data_list)
+    data_all = merge_all(data_list)
 
     print '[%s]main end...' %(time.asctime( time.localtime(time.time())))
