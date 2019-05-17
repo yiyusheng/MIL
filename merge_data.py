@@ -22,9 +22,9 @@ def load_file(path,nrows=-1):
     return data
 
 def get_colnames(data):
-    cn = data.columns.values.tolist()
-    name_meta = cn[0:5]
-    name_smart = cn[5:len(cn)]
+    cn = data.columns.values.tolist()  
+    name_meta = [i for i in cn if 'smart' not in i]
+    name_smart = [i for i in cn if 'smart' in i]
     return [name_meta,name_smart]
 
 # %% read files
@@ -47,7 +47,7 @@ def merge_dir(dir_name,save=1):
 def merge_all(data_list,save=1):
     data = pd.concat(data_list,sort=False)
     if save==1:
-        data.to_csv('/home/yiyusheng/Data/backblaze/data_bb',index=0)
+        data.to_csv('/home/yiyusheng/Data/backblaze/data_all',index=0)
     return data
 
 # %%
@@ -60,7 +60,7 @@ if __name__=='__main__':
     data17 = merge_dir('data_2017')
     data18 = merge_dir('data_2018')
     data19 = merge_dir('data_2019')
-    data_list = [data13,data15,data16,data17,data18,data19]
-    data_all = merge_all(data_list)
+#    data_list = [data13,data15,data16,data17,data18,data19]
+#    data_all = merge_all(data_list)
 
     print '[%s]main end...' %(time.asctime( time.localtime(time.time())))

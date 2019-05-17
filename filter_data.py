@@ -11,7 +11,9 @@ statistic data by models
 """
 
 import os,time
+import pandas as pd
 from merge_data import load_file,get_colnames
+
 
 # %% filter and save
 def filter_data(data,save=1):
@@ -66,13 +68,20 @@ def stat_by_models(data_filter,path_stat,save=1):
 if __name__=='__main__':
     print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
     
-    path_load = os.getenv("HOME")+'/Data/backblaze/data_bb'
+    path_load = os.getenv("HOME")+'/Data/backblaze/data_all'
     path_model = os.getenv("HOME")+'/Data/backblaze/model_file/'
-    path_stat =  os.getenv("HOME")+'/Data/backblaze/stat/'
+    path_stat =  os.getenv("HOME")+'/Data/backblaze/stat/'    
+    path_year = os.getenv("HOME")+'/Data/backblaze/year_file/'
     
-    data = load_file(path_load)
-    data_filter = filter_data(data)
+    data15 = load_file(path_year+'data_2015')
+    data16 = load_file(path_year+'data_2016')
+    data17 = load_file(path_year+'data_2017')
+    data18 = load_file(path_year+'data_2018')
+    data19 = load_file(path_year+'data_2019')
+    data_list = [data15,data16,data17,data18,data19]
+    data_all = pd.concat(data_list,sort=False)
     
+    data_filter = filter_data(data_all)    
     [m1,m2,m3,m4,m5,m6] = group_data_by_models(data_filter,path_model)
     [s1,s2,s3,s4,s5,s6] = stat_by_models(data_filter,path_stat)
     

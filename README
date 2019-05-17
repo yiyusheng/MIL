@@ -1,0 +1,7 @@
+1. merge_data.py: generate year data from original data for each day
+2. filter_data.py: filter invalid column and group data by model
+3. preprocess_data.py: filter invalid row, select features, generate train and test tags
+
+experiment.py is useless since MIL is implemented by MATLAB. Thus, I use matlab to make experiment.
+
+
