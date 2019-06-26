@@ -13,30 +13,13 @@ Preprocess data:
 
 Run for About 25 mins
 """
-import os,time
+import os,time,sys
 import numpy as np
 import pandas as pd
 
 from sklearn.model_selection import KFold
 from scipy.stats import ranksums
 from merge_data import load_file,get_colnames 
-
-def normalize_data(data):
-    [name_meta,name_smart] = get_colnames(data)    
-    data[name_smart]=data[name_smart].apply(lambda x:(x-x.min())/(x.max()-x.min()))
-    print '[%s]normalize_data start...' %(time.asctime( time.localtime(time.time())))
-    return data
-
-def add_tia(data):
-    [name_meta,name_smart] = get_colnames(data)    
-    data['ts'] = pd.to_datetime(data['date']).values.astype(np.int64)//10**9/86400
-    data_failure_day = data[data['failure']==1]
-    data = pd.merge(data,data_failure_day[['serial_number','ts']],left_on='serial_number',right_on='serial_number',how='left')
-    data['tia'] = data['ts_x']-data['ts_y']+1
-    data['tia'] = data['tia'].fillna(0)
-    print '[%s]add_tia start...' %(time.asctime( time.localtime(time.time())))
-
-    return data[name_meta+['tia']+name_smart]
 
 def select_feature(data):
     [name_meta,name_smart] = get_colnames(data)
@@ -48,7 +31,7 @@ def select_feature(data):
         rs_xp = ranksums(x, y)
         stat_ranksums.loc[stat_ranksums['name_smart']==ns,'ranksum'] = rs_xp[1] #p-value  
     feature_selected = pd.DataFrame(stat_ranksums.loc[stat_ranksums['ranksum']<0.05,'name_smart'],columns=['name_smart'])
-    print '[%s]select_feature start...' %(time.asctime( time.localtime(time.time())))
+    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
     return [feature_selected,stat_ranksums]
 
 def kfold_data(data,k):
@@ -60,22 +43,19 @@ def kfold_data(data,k):
         sn_folds[fold_name] = pd.DataFrame(np.zeros(len(sn_folds)).astype(int),columns=[fold_name])
         sn_folds.loc[train,fold_name] = 1    #train=1 valiate=0
         fold_count+=1
-    print '[%s]kfold_data start...' %(time.asctime( time.localtime(time.time())))
+    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
     return sn_folds
 
 def preprocess_data(path_model,model_name,k):
-    print '[%s]preprocess_data start...' %(time.asctime( time.localtime(time.time())))
     path = path_model+model_name
     data = load_file(path)
       
-    data = normalize_data(data)  
-    data = add_tia(data)
     [feature_selected,stat_ranksums] = select_feature(data)
     sn_folds = kfold_data(data,k)
     
     feature_selected.to_csv(path_preprocess+'selected_features_'+model_name,index=0) 
     sn_folds.to_csv(path_preprocess+'sn_folds_'+model_name,index=0)
-    print '[%s]preprocess_data end...\n' %(time.asctime( time.localtime(time.time())))
+    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
     
     return [feature_selected,sn_folds]
 
