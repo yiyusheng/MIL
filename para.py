@@ -83,10 +83,9 @@ def generate_balance_index(train_label,rate_neg=1):
     
     return pd.Index.union(index_pos,index_neg_balance)
 
-def set_paras(datas,paras,quiet=0):
+def set_paras(datas,f_id,num_neg,rate_neg,time_window,quiet=1):
 
     [data,selected_features,sn_folds]=datas
-    [f_id,num_neg,rate_neg,time_window] = paras
 #    data = select_instant(data,time_window,num_neg,quiet,)
     fold_id = 'fold'+str(f_id)
     [train,train_meta,train_label,test,test_meta,test_label] = generate_train_test(data,sn_folds,selected_features,fold_id,time_window,num_neg,quiet)
