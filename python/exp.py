@@ -136,7 +136,27 @@ def stat_number(dataexp,data_name,paras):
 #    print 'tr_dn:%d tr_dp:%d te_dn:%d te_dp:%d' %(tr_dn,tr_dp,te_dn,te_dp)
 #    print 'tr_d:%d te_d:%d' %(tr_dn+tr_dp,te_dn+te_dp)
 #    print 'tr_dni:%.2f tr_dpi:%.2f te_dni:%.2f te_dpi:%.2f ' %(tr_in/float(tr_dn),tr_ip/float(tr_dp),te_in/float(te_dn),te_ip/float(te_dp))
-  
+
+def exp_model_para(dataexp):
+    paras_model = pd.DataFrame(list(ParameterGrid({'mf':range(5,30,5),
+                                'md':range(3,23,5),
+                                'mss':range(50,250,50),
+                                'msl':range(10,50,10)})))
+    idx1 = range(len(paras_model))
+    result_rf_train = []
+    result_rf_test = []
+    for j in idx1:
+        para_model = paras_model.loc[j].tolist()
+        r_rf = model_rf(dataexp,para_model)
+        result_rf_train.append(r_rf[0])
+        result_rf_test.append(r_rf[1])
+        print(j)
+    result_rf_train = pd.DataFrame(result_rf_train)
+    result_rf_test = pd.DataFrame(result_rf_test)
+    result_rf = pd.concat([paras_model.reset_index(drop=True),result_rf_train.reset_index(drop=True)],axis=1)
+    result_rf = pd.concat([result_rf.reset_index(drop=True),result_rf_test.reset_index(drop=True)],axis=1)
+    return result_rf
+
 def exp_data(paras_grid,datas,data_name,upper=2):
     result_svm = []
     result_rf = []
@@ -148,26 +168,7 @@ def exp_data(paras_grid,datas,data_name,upper=2):
         paras = paras_grid.loc[i].tolist()
         dataexp = set_paras(datas,paras,1)
         stat_number(dataexp,data_name,paras)
-        num_feature = len(datas[1])
-        mf='auto',md=None,mss=2,msl=1
-        paras_model = pd.DataFrame(list(ParameterGrid({'mf':range(5,num_feature,5),
-                                    'md':range(3,23,5),
-                                    'mss':range(50,250,50),
-                                    'msl':range(10,50,10)})))
-        idx1 = range(len(paras_model))
-        result_rf_train = []
-        result_rf_test = []
-        for j in idx1:
-            para_model = paras_model.loc[j].tolist()
-            r_rf = model_rf(dataexp,para_model)
-            result_rf_train.append(r_rf[0])
-            result_rf_test.append(r_rf[1])
-            print(j)
-        result_rf_train = pd.DataFrame(result_rf_train)
-        result_rf_test = pd.DataFrame(result_rf_test)
-        result_rf = pd.concat([paras_model.reset_index(drop=True),result_rf_train.reset_index(drop=True)],axis=1)
-        result_rf = pd.concat([result_rf.reset_index(drop=True),result_rf_test.reset_index(drop=True)],axis=1)
-
+        
         r_rf = model_rf(dataexp)
         r_nb = r_rf
         r_svm = r_rf
@@ -176,8 +177,6 @@ def exp_data(paras_grid,datas,data_name,upper=2):
         result_svm.append(r_svm)
         result_rf.append(r_rf)
         result_nb.append(r_nb)
-        print 'FDR_svm:%.3f FAR_svm:%.3f FDR_rf:%.3f FAR_rf:%.3f FDR_nb:%.3f FAR_nb:%.3f'\
-        %(r_svm['FDR'],r_svm['FAR'],r_rf['FDR'],r_rf['FAR'],r_nb['FDR'],r_nb['FAR'])
         print '[%s]paras[%d] for dataset %s end...\n' %(time.asctime(time.localtime(time.time())),i,data_name)   
     
     result_svm = pd.DataFrame(result_svm)
@@ -211,7 +210,7 @@ if __name__=='__main__':
     path_preprocess_baidu = os.getenv("HOME")+'/Data/baidu/' 
     path_preprocess_murry = os.getenv("HOME")+'/Data/murry05/' 
     datas_murry = load_files(path_preprocess_murry,'murry')
-    datas_bb = load_files(path_preprocess_bb,'ST4000DM000')
+#    datas_bb = load_files(path_preprocess_bb,'ST4000DM000')
     datas_baidu = load_files(path_preprocess_baidu,'baidu')
     
     # Set paras
@@ -227,8 +226,8 @@ if __name__=='__main__':
     # Load data and execute experiment      
     result_murry = exp_data(paras_grid1,datas_murry,'murry',-1)
     result_baidu = exp_data(paras_grid1,datas_baidu,'baidu',-1)
-    result_bb = exp_data(paras_grid,datas_bb,'backblaze',-1)  
- 
+#    result_bb = exp_data(paras_grid,datas_bb,'backblaze',-1)  
+    result_bb = result_murry
     
     
     # Experiment   
