@@ -157,6 +157,11 @@ def exp_model_para(dataexp):
     result_rf = pd.concat([result_rf.reset_index(drop=True),result_rf_test.reset_index(drop=True)],axis=1)
     return result_rf
 
+def extract_test_perf(d):
+    d_test = d[1]
+    d_test_disk = {k:d_test[k] for k in ['FDR_disk','FAR_disk']}
+    return d_test_disk
+    
 def exp_data(paras_grid,datas,data_name,upper=2):
     result_svm = []
     result_rf = []
@@ -174,9 +179,10 @@ def exp_data(paras_grid,datas,data_name,upper=2):
         r_svm = r_rf
 #        r_nb = model_nb(dataexp)
 #        r_svm = model_svm(dataexp)
-        result_svm.append(r_svm)
-        result_rf.append(r_rf)
-        result_nb.append(r_nb)
+        
+        result_svm.append(extract_test_perf(r_svm))
+        result_rf.append(extract_test_perf(r_rf))
+        result_nb.append(extract_test_perf(r_nb))
         print '[%s]paras[%d] for dataset %s end...\n' %(time.asctime(time.localtime(time.time())),i,data_name)   
     
     result_svm = pd.DataFrame(result_svm)
