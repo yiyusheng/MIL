@@ -1,8 +1,7 @@
-IN DIR[py]:
-1. merge_data.py: generate year data from original data for each day
-2. filter_data.py: filter invalid column and group data by model
-3. preprocess_data.py: filter invalid row, select features, generate train and test tags
-
-experiment.py is useless since MIL is implemented by MATLAB. Thus, I use matlab to make experiment.
-
-
+1. base_func.py: basic function like load_file and get_colnames
+2. filter.py: functions for filter data
+3. para.py: functions for determine train and test data and balance pos data and neg data
+4. merge_save_bb.py: merge data of backblaze splitted by date and group them by disk model and save
+5. load_xx.py: load data of backblaze, baidu, and murry05, filter them with filter.py and save them in the preprocessed_data_xx file.
+6. exp.py: build model, test it and present the result
+We can execute the code by d->e (3 files)->f

@@ -23,10 +23,10 @@ def load_file(path,nrows=-1,quiet=True):
             print '[%s]Read %s %d lines success...' %(time.asctime(time.localtime(time.time())),path,nrows)       
     return data
 
-def get_colnames(data):
+def get_colnames(data,keystr = 'smart'):
     cn = data.columns.values.tolist()  
-    name_meta = [i for i in cn if 'smart' not in i]
-    name_smart = [i for i in cn if 'smart' in i]
+    name_meta = [i for i in cn if keystr not in i]
+    name_smart = [i for i in cn if keystr in i]
     return [name_meta,name_smart]
 
 
