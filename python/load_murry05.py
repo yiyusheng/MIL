@@ -13,7 +13,7 @@ from load_baidu import add_date
 
 
 if __name__=='__main__':
-    print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main start...' %(time.asctime( time.localtime(time.time()))))
     model_name = 'murry'
     k=5
     path_load = os.getenv("HOME")+'/Data/murry05/'
@@ -26,7 +26,8 @@ if __name__=='__main__':
     # Preprocess data
     data = add_date(data)
     data = filter.filter_data(data,save = 1,start_date='2010-01-01')   
-    data = filter.add_tia(data)
+    #data = filter.add_tia(data)
+    data = filter.add_tia_all(data)
     data = filter.normalize_data(data)
     data.to_csv(path_load+'preprocessed_data_'+model_name,index=0)
     

@@ -27,7 +27,7 @@ def filter_data(data,save=1,start_date='2015-01-01'):
     
     data_filter = data_filter[data_filter.date >= start_date]
     
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
 
     return data_filter
 
@@ -40,7 +40,19 @@ def add_tia(data):
     data = pd.merge(data,data_failure_day[['serial_number','ts']],left_on='serial_number',right_on='serial_number',how='left')
     data['tia'] = data['ts_y']-data['ts_x']+1
     data['tia'] = data['tia'].fillna(0)
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
+
+    return data[name_meta+['tia']+name_smart]
+
+def add_tia_all(data):
+    [name_meta,name_smart] = get_colnames(data)    
+    data['ts'] = pd.to_datetime(data['date']).values.astype(np.int64)//10**9/86400
+    idx = data.groupby('serial_number')['date'].transform(max) == data['date']
+    data_last_day = data[idx]
+    data = pd.merge(data,data_last_day[['serial_number','ts']],left_on='serial_number',right_on='serial_number',how='left')
+    data['tia'] = data['ts_y']-data['ts_x']+1
+    data['tia'] = data['tia'].fillna(0)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
 
     return data[name_meta+['tia']+name_smart]
 
@@ -49,7 +61,7 @@ def normalize_data(data):
     data[name_smart]=data[name_smart].apply(lambda x:(x-x.min())/(x.max()-x.min()))
     data[name_smart]=data[name_smart].fillna(0)
     data[name_smart] = data[name_smart].round(6)
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return data
 
 def select_feature(data):
@@ -62,7 +74,7 @@ def select_feature(data):
         rs_xp = ranksums(x, y)
         stat_ranksums.loc[stat_ranksums['name_smart']==ns,'ranksum'] = rs_xp[1] #p-value  
     feature_selected = pd.DataFrame(stat_ranksums.loc[stat_ranksums['ranksum']<0.05,'name_smart'],columns=['name_smart'])
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return [feature_selected,stat_ranksums]
 
 def kfold_data(data,k):
@@ -74,7 +86,7 @@ def kfold_data(data,k):
         sn_folds[fold_name] = pd.DataFrame(np.zeros(len(sn_folds)).astype(int),columns=[fold_name])
         sn_folds.loc[train,fold_name] = 1    #train=1 valiate=0
         fold_count+=1
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return sn_folds
 
 

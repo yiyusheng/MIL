@@ -25,11 +25,11 @@ def preprocess_data(path_model,model_name,k,path_preprocess):
     sn_folds = kfold_data(data,k)   
     sn_folds.to_csv(path_preprocess+'sn_folds_'+model_name,index=0)
     
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return [feature_selected,sn_folds]
 
 if __name__=='__main__':
-    print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main start...' %(time.asctime( time.localtime(time.time()))))
     
     path_preprocess = os.getenv("HOME")+'/Data/backblaze/model_preprocess/'
     path_model = os.getenv("HOME")+'/Data/backblaze/model_file/'
@@ -39,4 +39,4 @@ if __name__=='__main__':
     for mn in model_names:
         paras.append(preprocess_data(path_model,mn,5,path_preprocess))
     
-    print '[%s]main end...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main end...' %(time.asctime( time.localtime(time.time()))))

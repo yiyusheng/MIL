@@ -59,7 +59,7 @@ def model_svm(dataexp,quiet=1):
     test_pred = model.predict(test)
     
     m = evaluate_model(test_label,test_pred,test_meta)
-    print '%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+    print('%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return m[0]
 
 def model_rf(dataexp,para_model=[]):
@@ -78,11 +78,11 @@ def model_rf(dataexp,para_model=[]):
     test_pred = model.predict(test)
     m0 = evaluate_model(train_label,train_pred,train_meta)
     m1 = evaluate_model(test_label,test_pred,test_meta)
-    print 'RF_disk: train_FDR:%.2f train_FAR:%.2f test_FDR:%.2f test_FAR:%.2f' \
-    %(m0[0]['FDR_disk'],m0[0]['FAR_disk'],m1[0]['FDR_disk'],m1[0]['FAR_disk'])
-    print 'RF_inst: train_FDR:%.2f train_FAR:%.2f test_FDR:%.2f test_FAR:%.2f' \
-    %(m0[0]['FDR_inst'],m0[0]['FAR_inst'],m1[0]['FDR_inst'],m1[0]['FAR_inst'])
-    print '%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+    print('RF_disk: train_FDR:%.2f train_FAR:%.2f test_FDR:%.2f test_FAR:%.2f' \
+    %(m0[0]['FDR_disk'],m0[0]['FAR_disk'],m1[0]['FDR_disk'],m1[0]['FAR_disk']))
+    print('RF_inst: train_FDR:%.2f train_FAR:%.2f test_FDR:%.2f test_FAR:%.2f' \
+    %(m0[0]['FDR_inst'],m0[0]['FAR_inst'],m1[0]['FDR_inst'],m1[0]['FAR_inst']))
+    print('%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return [m0[0],m1[0]]
 
 def promote_label(model,train,train_label):
@@ -104,7 +104,7 @@ def model_rf_promote(dataexp,quiet=1):
     test_pred = model.predict(test)
  
     m = evaluate_model(test_label,test_pred,test_meta)
-    print '%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+    print('%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return m[0]
 
 def model_nb(dataexp,quiet=1):
@@ -115,7 +115,7 @@ def model_nb(dataexp,quiet=1):
     test_pred = model.predict(test)
  
     m = evaluate_model(test_label,test_pred,test_meta)
-    print '%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+    print('%s done for %d seconds...' %(sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return m[0]
 
 def stat_number(dataexp,data_name,paras):
@@ -129,10 +129,10 @@ def stat_number(dataexp,data_name,paras):
     [tr_dn,tr_dp] = np.unique(train_label_disk,return_counts=True)[1]
     [te_dn,te_dp] = np.unique(test_label_disk,return_counts=True)[1]
     
-    print 'Data %s start...' %(data_name)
-    print 'f_id:%s num_neg:%d rate_neg:%d time_window:%d num_features:%d' %(f_id,num_neg,rate_neg,time_window,len(train.columns))
-    print 'tr_n:%d(%d) tr_p:%d(%d) te_n:%d(%d) te_p:%d(%d)' \
-    %(tr_in,tr_in/float(tr_dn),tr_ip,tr_ip/float(tr_dp),te_in,te_in/float(te_dn),te_ip,te_ip/float(te_dp))
+    print('Data %s start...' %(data_name))
+    print('f_id:%s num_neg:%d rate_neg:%d time_window:%d num_features:%d' %(f_id,num_neg,rate_neg,time_window,len(train.columns)))
+    print('tr_n:%d(%d) tr_p:%d(%d) te_n:%d(%d) te_p:%d(%d)' \
+    %(tr_in,tr_in/float(tr_dn),tr_ip,tr_ip/float(tr_dp),te_in,te_in/float(te_dn),te_ip,te_ip/float(te_dp)))
 #    print 'tr_dn:%d tr_dp:%d te_dn:%d te_dp:%d' %(tr_dn,tr_dp,te_dn,te_dp)
 #    print 'tr_d:%d te_d:%d' %(tr_dn+tr_dp,te_dn+te_dp)
 #    print 'tr_dni:%.2f tr_dpi:%.2f te_dni:%.2f te_dpi:%.2f ' %(tr_in/float(tr_dn),tr_ip/float(tr_dp),te_in/float(te_dn),te_ip/float(te_dp))
@@ -183,7 +183,7 @@ def exp_data(paras_grid,datas,data_name,upper=2):
         result_svm.append(extract_test_perf(r_svm))
         result_rf.append(extract_test_perf(r_rf))
         result_nb.append(extract_test_perf(r_nb))
-        print '[%s]paras[%d] for dataset %s end...\n' %(time.asctime(time.localtime(time.time())),i,data_name)   
+        print('[%s]paras[%d] for dataset %s end...\n' %(time.asctime(time.localtime(time.time())),i,data_name))   
     
     result_svm = pd.DataFrame(result_svm)
     result_rf = pd.DataFrame(result_rf)
@@ -247,4 +247,4 @@ if __name__=='__main__':
     fig_nb = visualize_result(result,'nb')
     
     
-    print '[%s]%s end...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s end...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))

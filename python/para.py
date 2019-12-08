@@ -30,7 +30,7 @@ def load_files(path_preprocess,mn,nrows=-1,quiet=0):
     selected_features = load_file(path_preprocess+'selected_features_'+mn)
     sn_folds = load_file(path_preprocess+'sn_folds_'+mn)
     if not quiet:
-        print '[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+        print('[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return [data,selected_features,sn_folds]
 
 def select_instant(data,time_window,num_neg,quiet=0):
@@ -47,7 +47,7 @@ def select_instant(data,time_window,num_neg,quiet=0):
     data = pd.concat([data_pos,data_neg]).reset_index(drop=True)
     
     if not quiet:
-        print '[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+        print('[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return data
 
 def generate_train_test(data,sn_folds,selected_features,fold_id,time_window,num_neg,quiet=0):
@@ -69,7 +69,7 @@ def generate_train_test(data,sn_folds,selected_features,fold_id,time_window,num_
     test_label = (test_meta['tia']>0).astype(int)
     
     if not quiet:
-        print '[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds)
+        print('[%s]%s done for %d seconds...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name,(datetime.now()-start_time).seconds))
     return [train,train_meta,train_label,
             test,test_meta,test_label]
 

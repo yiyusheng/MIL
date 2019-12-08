@@ -26,7 +26,7 @@ def merge_dir(dir_name,save=1):
     data = data.sort_values(['date','model','serial_number'])
     if save==1:
         data.to_csv(path+'year_file/'+dir_name,index=0)
-    print "Merge %s success..." %(dir_name)
+    print("Merge %s success..." %(dir_name))
     return data
     
 def merge_all(data_list,save=1):
@@ -51,7 +51,7 @@ def group_data_by_models(data_filter,path_model,save=1):
         data_models.append(data_model)
         if save==1:
             data_model.to_csv(path_model+m,index=0)        
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return data_models
 
 def stat_by_models(data_filter,path_stat,save=1):  
@@ -69,13 +69,13 @@ def stat_by_models(data_filter,path_stat,save=1):
         stat_model_date_num_item.to_csv(path_stat+'stat_model_date_num_item',index=0)  
         stat_model_date_num_failure.to_csv(path_stat+'stat_model_date_num_failure',index=0)  
         stat_model_count.to_csv(path_stat+'stat_model_count')
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)    
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return [stat_model_num_item,stat_model_num_sn,stat_model_num_failure,stat_model_date_num_item,stat_model_date_num_failure,stat_model_count]    
 
 
 # %%
 if __name__=='__main__':
-    print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main start...' %(time.asctime( time.localtime(time.time()))))
     
     data13 = merge_dir('data_2013')
     data15 = merge_dir('data_2015')
@@ -91,4 +91,4 @@ if __name__=='__main__':
 
     [m1,m2,m3,m4,m5,m6] = group_data_by_models(data_all,path_model)
     [s1,s2,s3,s4,s5,s6] = stat_by_models(data_all,path_stat)
-    print '[%s]main end...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main end...' %(time.asctime( time.localtime(time.time()))))

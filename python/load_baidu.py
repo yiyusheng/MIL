@@ -19,11 +19,11 @@ def add_date(data):
     
     [name_meta,name_smart] = get_colnames(data)
     data = data[name_meta+name_smart]
-    print '[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name)
+    print('[%s]%s done...' %(time.asctime(time.localtime(time.time())),sys._getframe().f_code.co_name))
     return data
 
 if __name__=='__main__':
-    print '[%s]main start...' %(time.asctime( time.localtime(time.time())))
+    print('[%s]main start...' %(time.asctime( time.localtime(time.time()))))
     model_name = 'baidu'
     k=5
     path_load = os.getenv("HOME")+'/Data/baidu/'

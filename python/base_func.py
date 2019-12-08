@@ -16,11 +16,11 @@ def load_file(path,nrows=-1,quiet=True):
     if nrows==-1:
         data = pd.read_csv(path,sep=',')
         if quiet==False:
-            print '[%s]Read %s success...' %(time.asctime(time.localtime(time.time())),path)
+            print('[%s]Read %s success...' %(time.asctime(time.localtime(time.time())),path))
     else:
         data = pd.read_csv(path,sep=',',nrows=nrows)
         if quiet==False:
-            print '[%s]Read %s %d lines success...' %(time.asctime(time.localtime(time.time())),path,nrows)       
+            print('[%s]Read %s %d lines success...' %(time.asctime(time.localtime(time.time())),path,nrows))       
     return data
 
 def get_colnames(data):
